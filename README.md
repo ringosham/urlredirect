@@ -21,5 +21,5 @@ A systemd unit is provided but its simple enough to run it on any init systems
 1. Put both files in the client/ directory on the guest machine.
 2. Put RemoteBrowser.vbs to C:\
 3. Run RemoteBrowser.reg to register it as a "Web browser"
-4. Go to "Settings > Apps > Default apps" and set "Web browser" to "RemoteBrowser"
-   * For Windows 11, you will need to set the http and https protocols to RemoteBrowser instead
+4. Go to "Settings > Apps > Default apps" and set "Web browser" to "Windows Basic Script Host"
+   * For Windows 11, you will need to set the http and https protocols to "Windows Basic Script Host" instead
