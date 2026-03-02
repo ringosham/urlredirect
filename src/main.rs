@@ -96,24 +96,27 @@ fn handle_connection(mut stream: TcpStream) {
             return;
         }
     };
-    let mut link = url.split("?").nth(1).unwrap_or("").split("&")
-        .find(|param| param.starts_with("l="))
-        .map(|param| param.split("=").nth(1).unwrap_or(""))
-        .unwrap_or("").to_owned();
-    if link.is_empty() {
-        println!("No link provided");
-        let _ = stream.write_all(b"HTTP/1.1 400 BAD REQUEST \r\n\r\n");
-        return;
-    }
+    // Split once on '?' to get query, then strip "l=" prefix.
+    // This preserves any '?' and '&' inside the URL value itself.
+    let link = match url.split_once('?')
+        .and_then(|(_, query)| query.strip_prefix("l=")) {
+        Some(l) if !l.is_empty() => l,
+        _ => {
+            println!("No link provided");
+            let _ = stream.write_all(b"HTTP/1.1 400 BAD REQUEST \r\n\r\n");
+            return;
+        }
+    };
     let _ = stream.write_all(b"HTTP/1.1 200 OK \r\n\r\n");
-    if !link.starts_with("http://") && !link.starts_with("https://") {
-        //Append http:// if not present
-        link = format!("http://{}", link);
-    }
-    println!("Received link: {}", link);
+    let final_link = if !link.starts_with("http://") && !link.starts_with("https://") {
+        format!("https://{}", link)
+    } else {
+        link.to_owned()
+    };
+    println!("Received link: {}", final_link);
     // xdg-open the link
     match std::process::Command::new("xdg-open")
-        .arg(link)
+        .arg(&final_link)
         .spawn() {
             Ok(_) => {}
             Err(e) => {
