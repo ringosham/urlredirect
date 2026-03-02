@@ -1,0 +1,21 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Clients\StartMenuInternet\RemoteBrowser.vbs]
+@="Linux Host Browser"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Clients\StartMenuInternet\RemoteBrowser.vbs\shell\open\command]
+@="\"C:\\Windows\\System32\\wscript.exe\" \"C:\\RemoteBrowser.vbs\" \"%1\""
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\RemoteBrowserURL]
+@="Host Browser URL"
+"URL Protocol"=""
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\RemoteBrowserURL\shell\open\command]
+@="\"C:\\Windows\\System32\\wscript.exe\" \"C:\\RemoteBrowser.vbs\" \"%1\""
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\RegisteredApplications]
+"RemoteBrowser"="Software\\Clients\\StartMenuInternet\\RemoteBrowser.vbs\\Capabilities"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Clients\StartMenuInternet\RemoteBrowser.vbs\Capabilities\URLAssociations]
+"http"="RemoteBrowserURL"
+"https"="RemoteBrowserURL"

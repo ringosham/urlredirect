@@ -1,0 +1,18 @@
+[Unit]
+Description=URL Redirection Server for Virtual Machines
+# Place this service in ~/.config/systemd/user/urlredirect.service
+After=network-online.target graphical.target default.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/urlredirect -p 10080
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=urlredirect
+
+[Install]
+WantedBy=default.target
+
