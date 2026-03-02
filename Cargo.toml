@@ -1,0 +1,11 @@
+[package]
+name = "urlredirect"
+version = "0.1.0"
+edition = "2024"
+
+[profile.release]
+opt-level = 'z'
+lto = true
+codegen-limits = 1
+panic = 'abort'
+strip = true
