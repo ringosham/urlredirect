@@ -96,8 +96,8 @@ fn handle_connection(mut stream: TcpStream) {
             return;
         }
     };
-    // Split once on '?' to get query, then strip "l=" prefix.
-    // This preserves any '?' and '&' inside the URL value itself.
+    // Strip away the ?l= prefix
+    // We don't expect any other query parameters, so if it's malformed, xdg can handle it.
     let link = match url.split_once('?')
         .and_then(|(_, query)| query.strip_prefix("l=")) {
         Some(l) if !l.is_empty() => l,
@@ -118,7 +118,10 @@ fn handle_connection(mut stream: TcpStream) {
     match std::process::Command::new("xdg-open")
         .arg(&final_link)
         .spawn() {
-            Ok(_) => {}
+            Ok(mut child) => {
+                // Reap child in background to avoid zombies
+                thread::spawn(move || { let _ = child.wait(); });
+            }
             Err(e) => {
                 println!("Failed to open link: {}", e);
             }
@@ -133,7 +136,7 @@ fn main() {
         panic!("Linux support only");
     }
 
-    // Parse port without collecting all args
+    // We only have 1 argument
     let mut args = std::env::args().skip(1);
     let port = if args.next().as_deref() == Some("-p") {
         args.next()
