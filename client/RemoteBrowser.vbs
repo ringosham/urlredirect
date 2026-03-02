@@ -17,6 +17,6 @@ Next
 
 If hostIP <> "" And WScript.Arguments.Count > 0 Then
     url = WScript.Arguments(0)
-    command = "curl.exe -m 2 ""http://" & hostIP & ":8080/?url=" & url & """"
+    command = "curl.exe -m 2 ""http://" & hostIP & ":10080/?url=" & url & """"
     objShell.Run command, 0, False
 End If
