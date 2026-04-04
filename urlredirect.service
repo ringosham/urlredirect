@@ -1,9 +1,9 @@
 [Unit]
 Description=URL Redirection Server for Virtual Machines
 # Place this service in ~/.config/systemd/user/urlredirect.service
-After=network-online.target graphical-session.target
-Wants=network-online.target
-Requisite=graphical-session.target
+PartOf=graphical-session.target
+After=network-online.target graphical-session.target xdg-desktop-portal.service
+Wants=network-online.target graphical-session.target xdg-desktop-portal.service
 
 [Service]
 Type=simple
@@ -13,12 +13,6 @@ RestartSec=5
 StandardOutput=journal
 StandardError=journal
 SyslogIdentifier=urlredirect
-
-Environment="DISPLAY=:0"
-Environment="DBUS_SESSION_BUS_ADDRESS=unix:path=%t/bus"
-Environment="XDG_RUNTIME_DIR=%t"
-# Change this to KDE/GNOME/XFCE/Unity/etc.
-Environment="XDG_CURRENT_DESKTOP=KDE"
 
 [Install]
 WantedBy=graphical-session.target
